@@ -40,6 +40,17 @@ class Account(object):
         r = requests.get(url,
                          headers = headers)
         return json.loads(r.text)
+
+    def get_deposits(self):
+        ''' get deposit money
+        '''
+        url = 'https://coincheck.com/api/deposit_money'
+        headers = make_header(url,
+                              access_key = self.access_key,
+                              secret_key = self.secret_key)
+        r = requests.get(url,
+                         headers = headers)
+        return json.loads(r.text)
     
 if __name__ == '__main__':
     pass
