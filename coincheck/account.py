@@ -41,7 +41,7 @@ class Account(object):
                          headers = headers)
         return json.loads(r.text)
 
-    def get_deposits(self):
+    def get_deposits(self, currency="BTC"):
         ''' get deposit money
         '''
         url = 'https://coincheck.com/api/deposit_money'
@@ -49,7 +49,9 @@ class Account(object):
                               access_key = self.access_key,
                               secret_key = self.secret_key)
         r = requests.get(url,
-                         headers = headers)
+                         headers = headers,
+                         params={"currency": currency}
+                         )
         return json.loads(r.text)
     
 if __name__ == '__main__':
