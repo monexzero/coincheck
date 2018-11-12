@@ -53,6 +53,18 @@ class Account(object):
                          params={"currency": currency}
                          )
         return json.loads(r.text)
+
+    def get_withdraws(self):
+        ''' get withdraws
+        '''
+        url = 'https://coincheck.com/api/withdraws'
+        headers = make_header(url,
+                              access_key = self.access_key,
+                              secret_key = self.secret_key)
+        r = requests.get(url,
+                         headers = headers,
+                         )
+        return json.loads(r.text)
     
 if __name__ == '__main__':
     pass
