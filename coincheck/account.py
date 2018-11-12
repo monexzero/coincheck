@@ -65,6 +65,19 @@ class Account(object):
                          headers = headers,
                          )
         return json.loads(r.text)
+
+    def get_sends(self, currency="BTC"):
+        ''' get send money
+        '''
+        url = 'https://coincheck.com/api/send_money'
+        headers = make_header(url,
+                              access_key = self.access_key,
+                              secret_key = self.secret_key)
+        r = requests.get(url,
+                         headers = headers,
+                         params={"currency": currency}
+                         )
+        return json.loads(r.text)
     
 if __name__ == '__main__':
     pass
