@@ -45,12 +45,14 @@ class Account(object):
         ''' get deposit money
         '''
         url = 'https://coincheck.com/api/deposit_money'
+        params = {"currency": currency}
         headers = make_header(url,
                               access_key = self.access_key,
-                              secret_key = self.secret_key)
+                              secret_key = self.secret_key,
+                              params=params)
         r = requests.get(url,
                          headers = headers,
-                         params={"currency": currency}
+                         params=params,
                          )
         return json.loads(r.text)
 
@@ -70,18 +72,15 @@ class Account(object):
         ''' get send money
         '''
         url = 'https://coincheck.com/api/send_money'
+        params = {"currency": currency}
         headers = make_header(url,
                               access_key = self.access_key,
-                              secret_key = self.secret_key)
+                              secret_key = self.secret_key,
+                              params=params,
+                              )
         r = requests.get(url,
                          headers = headers,
-                         params={"currency": currency}
+                         params=params,
                          )
         return json.loads(r.text)
     
-if __name__ == '__main__':
-    pass
-    #a = Account(access_key=settings.access_key, secret_key=settings.secret_key)
-    #print(a.get_balance())
-    #b = Account(access_key=settings.access_key, secret_key=settings.secret_key)
-    #print(b.get_balance())
