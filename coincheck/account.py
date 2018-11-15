@@ -3,8 +3,7 @@ import hmac
 import hashlib
 import requests
 import json
-#from coincheck.utils import make_header
-from utils import make_header
+from coincheck.utils import make_header
 import simplejson as json
 
 """
