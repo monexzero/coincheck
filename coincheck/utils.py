@@ -14,7 +14,8 @@ def nounce():
 def make_header(url,
                 access_key=None,
                 secret_key=None,
-                params=None):
+                params=None,
+                body=None):
     ''' create request header function
     :param url: URL for the new :class:`Request` object.
     '''
@@ -22,10 +23,16 @@ def make_header(url,
     url    = url
     message = nonce + url
     if params:
-        body = "".join(
+        params_str = "".join(
             ["%s=%s" % (key, val) for key, val in params.items()]
         )
-        message += "?%s" % body
+        message += "?%s" % params_str
+
+    if body:
+        body_str = "&".join(
+            ["%s=%s" % (key, val) for key, val in body.items()]
+        )
+        message += body_str
     signature = hmac.new(secret_key.encode('utf-8'), message.encode('utf-8'), hashlib.sha256).hexdigest()
     headers = {
        'ACCESS-KEY'      : access_key,

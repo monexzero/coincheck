@@ -3,7 +3,8 @@ import hmac
 import hashlib
 import requests
 import json
-from coincheck.utils import make_header
+#from coincheck.utils import make_header
+from utils import make_header
 import simplejson as json
 
 """
@@ -83,4 +84,21 @@ class Account(object):
                          params=params,
                          )
         return json.loads(r.text)
-    
+
+    def send(self, address="", amount=None):
+        url  = 'https://coincheck.com/api/send_money'
+        body = {
+            "address": address,
+            "amount":  amount,
+        }
+        headers = make_header(url,
+                              access_key = self.access_key,
+                              secret_key = self.secret_key,
+                              body=body,
+                              )
+        r = requests.post(url,
+                         body,
+                         headers=headers,
+                         )
+        return json.loads(r.text)
+
