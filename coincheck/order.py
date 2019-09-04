@@ -41,9 +41,42 @@ class Order(object):
         }
         r = requests.post(url,headers=headers,data=body)
         return json.loads(r.text)
+
+    def create_market(self, amount, order_type, pair):
+        ''' create new market order function
+        :param amount: float
+        :param order_type: str; set 'market_buy' or 'markey_sell'
+        :param pair: str; set 'btc_jpy' 
+        '''
+
+        nonce = nounce()
+        payload = { 
+            'order_type': order_type,
+            'pair': pair
+        }
+
+        if order_type == "markey_buy":
+            payload["market_buy_amount"] = amount
+        else:
+            payload["amount"] = amount
+
+        url  = 'https://coincheck.com/api/exchange/orders'
+        body = "&".join(["%s=%s" % (key, value) for key, value in payload.items()])
+        message = nonce + url + body
+        signature = hmac.new(self.secret_key.encode('utf-8'), message.encode('utf-8'), hashlib.sha256).hexdigest()
+        headers = {
+           'ACCESS-KEY'      : self.access_key,
+           'ACCESS-NONCE'    : nonce,
+           'ACCESS-SIGNATURE': signature
+        }
+        r = requests.post(url,headers=headers,data=body)
+        return json.loads(r.text)
     
     def buy_btc_jpy(self, **kwargs):
         return self.create(order_type='buy', pair='btc_jpy',**kwargs) 
+
+    def buy_market_btc_jpy(self, **kwargs):
+        return self.create_market(order_type="market_buy", pair="btc_jpy", **kwargs)
     
     def sell_btc_jpy(self, **kwargs):
         return self.create(order_type='sell', pair='btc_jpy',**kwargs) 
