@@ -55,7 +55,7 @@ class Order(object):
             'pair': pair
         }
 
-        if order_type == "markey_buy":
+        if order_type == "market_buy":
             payload["market_buy_amount"] = amount
         else:
             payload["amount"] = amount
