@@ -19,8 +19,8 @@ def make_header(url,
     ''' create request header function
     :param url: URL for the new :class:`Request` object.
     '''
-    nonce = nounce()
-    url    = url
+    nonce   = nounce()
+    url     = url
     message = nonce + url
     if params:
         params_str = "".join(

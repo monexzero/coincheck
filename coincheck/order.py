@@ -105,3 +105,33 @@ class Order(object):
         headers = make_header(url,access_key=self.access_key,secret_key=self.secret_key)
         r = requests.get(url,headers=headers)
         return json.loads(r.text)
+
+    def all_histories(self):
+        ''' show all payment histories
+        '''
+        limit = 25
+        url = 'https://coincheck.com/api/exchange/orders/' \
+            'transactions_pagination?limit=%s' % limit
+
+        histories      = []
+        starting_after = None
+        while(True):
+            _url = url
+            if starting_after:
+                _url = "%s&starting_after=%s" % (
+                    url, starting_after
+                )
+            headers = make_header(
+                _url,
+                access_key=self.access_key,
+                secret_key=self.secret_key,
+            )
+            r = requests.get(_url, headers=headers,)
+            data = json.loads(r.text)
+
+            if not data.get("data"):
+                return histories
+
+            histories.extend(data.get("data"))
+            starting_after = histories[-1].get("id")
+
